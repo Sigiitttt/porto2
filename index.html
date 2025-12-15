@@ -34,45 +34,54 @@
 
 <body class="bg-gray-50 text-gray-900 antialiased selection:bg-blue-100 selection:text-blue-700">
 
-   <nav class="fixed w-full top-0 z-50 transition-all duration-300 backdrop-blur-xl bg-white/80 border-b border-gray-100">
-    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
-        
-        <a href="#" class="flex items-center gap-2 group">
-            <div class="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center text-white group-hover:bg-blue-600 transition-colors duration-300">
-                <span class="font-bold text-sm">N</span>
+    <nav
+        class="fixed w-full top-0 z-50 transition-all duration-300 backdrop-blur-xl bg-white/80 border-b border-gray-100">
+        <div class="mcoax-w-screen-2xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+
+            <a href="#" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center text-white group-hover:bg-blue-600 transition-colors duration-300">
+                    <span class="font-bold text-sm">N</span>
+                </div>
+                <span
+                    class="text-lg font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors">
+                    Nama<span class="text-blue-600">.</span>
+                </span>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Home</a>
+                <a href="#about"
+                    class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">About</a>
+                <a href="#projects"
+                    class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Projects</a>
+
+                <div class="h-4 w-px bg-gray-200"></div>
+
+                <a href="#contact"
+                    class="px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-medium hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-600/20 hover:-translate-y-0.5 transition-all duration-300">
+                    Let's Talk
+                </a>
             </div>
-            <span class="text-lg font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors">
-                Nama<span class="text-blue-600">.</span>
-            </span>
-        </a>
 
-        <div class="hidden md:flex items-center space-x-8">
-            <a href="#home" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Home</a>
-            <a href="#about" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">About</a>
-            <a href="#projects" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Projects</a>
-            
-            <div class="h-4 w-px bg-gray-200"></div>
+            <button id="mobile-menu-btn"
+                class="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+        </div>
 
-            <a href="#contact" class="px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-medium hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-600/20 hover:-translate-y-0.5 transition-all duration-300">
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl md:hidden flex-col p-6 space-y-4 origin-top animate-fade-in-down">
+            <a href="#home" class="block text-base font-medium text-gray-600 hover:text-blue-600">Home</a>
+            <a href="#about" class="block text-base font-medium text-gray-600 hover:text-blue-600">About</a>
+            <a href="#projects" class="block text-base font-medium text-gray-600 hover:text-blue-600">Projects</a>
+            <hr class="border-gray-100">
+            <a href="#contact"
+                class="block text-center w-full px-5 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700">
                 Let's Talk
             </a>
         </div>
-
-        <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none">
-            <i class="ph ph-list text-2xl"></i>
-        </button>
-    </div>
-
-    <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl md:hidden flex-col p-6 space-y-4 origin-top animate-fade-in-down">
-        <a href="#home" class="block text-base font-medium text-gray-600 hover:text-blue-600">Home</a>
-        <a href="#about" class="block text-base font-medium text-gray-600 hover:text-blue-600">About</a>
-        <a href="#projects" class="block text-base font-medium text-gray-600 hover:text-blue-600">Projects</a>
-        <hr class="border-gray-100">
-        <a href="#contact" class="block text-center w-full px-5 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700">
-            Let's Talk
-        </a>
-    </div>
-</nav>
+    </nav>
 
     <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
         <div
@@ -259,174 +268,54 @@
     </section>
 
     <section id="projects" class="py-32 px-6 bg-white border-t border-gray-100">
-        <div class="max-w-screen-2xl px-6 md:px-12 mx-auto">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
 
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 reveal">
-                <div class="max-w-2xl">
-                    <h2 class="text-sm font-bold tracking-widest text-blue-600 uppercase mb-3">Selected Works</h2>
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
+                <div class="max-w-xl">
+                    <h2 class="text-sm font-bold tracking-widest text-blue-600 uppercase mb-3">Portfolio</h2>
                     <h3 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
-                        Crafting digital experiences <br>
-                        <span class="text-gray-400">that users love.</span>
+                        Selected Works
                     </h3>
                 </div>
-                <a href="#"
-                    class="hidden md:inline-flex items-center text-sm font-semibold text-gray-900 border-b border-gray-300 pb-1 hover:border-blue-600 hover:text-blue-600 transition-all">
-                    View All Projects <i class="ph-bold ph-arrow-right ml-2"></i>
-                </a>
+
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterProjects('all')"
+                        class="filter-btn active px-4 py-2 rounded-full text-sm font-medium transition-all border border-gray-200 hover:border-blue-600 hover:text-blue-600 bg-gray-900 text-white"
+                        data-filter="all">All</button>
+                    <button onclick="filterProjects('web')"
+                        class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all border border-gray-200 text-gray-600 hover:border-blue-600 hover:text-blue-600 bg-white"
+                        data-filter="web">Web Dev</button>
+                    <button onclick="filterProjects('data')"
+                        class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all border border-gray-200 text-gray-600 hover:border-blue-600 hover:text-blue-600 bg-white"
+                        data-filter="data">Mesin learning</button>
+                    <button onclick="filterProjects('game')"
+                        class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all border border-gray-200 text-gray-600 hover:border-blue-600 hover:text-blue-600 bg-white"
+                        data-filter="game">Game Dev</button>
+                </div>
             </div>
 
-            <div class="flex flex-col gap-8">
-
-                <article
-                    class="group relative bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-500 reveal">
-                    <div class="grid lg:grid-cols-2 gap-0">
-
-                        <div class="p-8 md:p-12 flex flex-col justify-center order-2 lg:order-1">
-                            <div class="mb-6 flex items-center gap-3">
-                                <span
-                                    class="bg-white border border-gray-200 text-xs font-bold px-3 py-1 rounded-full text-gray-900 shadow-sm">2024</span>
-                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">SaaS
-                                    Application</span>
-                            </div>
-
-                            <h3
-                                class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-                                Analytix Dashboard
-                            </h3>
-                            <p class="text-gray-600 leading-relaxed mb-8">
-                                Platform manajemen data real-time untuk e-commerce. Mengubah data mentah menjadi wawasan
-                                visual yang dapat ditindaklanjuti. Fokus pada performa rendering grafik besar dan UX
-                                yang intuitif.
-                            </p>
-
-                            <div class="flex flex-wrap gap-2 mb-10">
-                                <span
-                                    class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg">Next.js
-                                    14</span>
-                                <span
-                                    class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg">TypeScript</span>
-                                <span
-                                    class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg">Recharts</span>
-                                <span
-                                    class="text-xs font-medium text-gray-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg">Supabase</span>
-                            </div>
-
-                            <div class="flex items-center gap-4">
-                                <a href="#"
-                                    class="inline-flex items-center px-6 py-3 rounded-xl bg-gray-900 text-white font-medium text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-gray-900/20 hover:shadow-blue-600/20">
-                                    Live Demo <i class="ph-bold ph-arrow-up-right ml-2"></i>
-                                </a>
-                                <a href="#"
-                                    class="inline-flex items-center px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-medium text-sm hover:border-gray-900 hover:text-gray-900 transition-colors bg-white">
-                                    <i class="ph-fill ph-github-logo mr-2 text-lg"></i> Code
-                                </a>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-gray-200 relative h-64 lg:h-auto overflow-hidden order-1 lg:order-2 border-b lg:border-b-0 lg:border-l border-gray-200">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-gray-100/20 to-transparent z-10"></div>
-
-                            <img src="https://cdn.dribbble.com/userupload/13010729/file/original-f77e6872584285e2cb83a73c14d956f4.png?resize=1024x768"
-                                alt="Dashboard Preview"
-                                class="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-out origin-center">
-                        </div>
-                    </div>
-                </article>
-
-                <div class="grid md:grid-cols-2 gap-8">
-
-                    <article
-                        class="group bg-white rounded-3xl border border-gray-200 overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 transition-all duration-300 reveal delay-100 flex flex-col">
-                        <div class="h-64 overflow-hidden bg-gray-100 relative border-b border-gray-100">
-                            <img src="assets/proyek/proyek1.png" alt="Project 2"
-                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-
-                            <div
-                                class="absolute inset-0 bg-gray-900/0 group-hover:bg-gray-900/10 transition-all duration-300 flex items-center justify-center">
-                                <div
-                                    class="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                    <span
-                                        class="bg-white/90 backdrop-blur text-gray-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg">View
-                                        Project</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-8 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-xl font-bold text-gray-900 mb-1">Finance Landing</h3>
-                                    <p class="text-sm text-gray-500">Web Design & Development</p>
-                                </div>
-                                <a href="#"
-                                    class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all">
-                                    <i class="ph-bold ph-arrow-right"></i>
-                                </a>
-                            </div>
-                            <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
-                                Landing page responsif dengan animasi scroll halus (GSAP) dan integrasi form newsletter.
-                            </p>
-                            <div class="flex gap-2">
-                                <span
-                                    class="text-[10px] font-bold tracking-wider text-gray-500 bg-gray-50 uppercase px-2 py-1 rounded border border-gray-200">Tailwind</span>
-                                <span
-                                    class="text-[10px] font-bold tracking-wider text-gray-500 bg-gray-50 uppercase px-2 py-1 rounded border border-gray-200">GSAP</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="group bg-white rounded-3xl border border-gray-200 overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 transition-all duration-300 reveal delay-200 flex flex-col">
-                        <div class="h-64 overflow-hidden bg-gray-100 relative border-b border-gray-100">
-                            <img src="" alt="Project 3"
-                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-
-                            <div
-                                class="absolute inset-0 bg-gray-900/0 group-hover:bg-gray-900/10 transition-all duration-300 flex items-center justify-center">
-                                <div
-                                    class="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                    <span
-                                        class="bg-white/90 backdrop-blur text-gray-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg">View
-                                        Project</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-8 flex flex-col flex-grow">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-xl font-bold text-gray-900 mb-1">Mobile Travel App</h3>
-                                    <p class="text-sm text-gray-500">UI/UX Case Study</p>
-                                </div>
-                                <a href="#"
-                                    class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all">
-                                    <i class="ph-bold ph-arrow-right"></i>
-                                </a>
-                            </div>
-                            <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
-                                Desain antarmuka aplikasi travel dengan fokus pada alur pemesanan yang mudah dan visual
-                                destinasi yang imersif.
-                            </p>
-                            <div class="flex gap-2">
-                                <span
-                                    class="text-[10px] font-bold tracking-wider text-gray-500 bg-gray-50 uppercase px-2 py-1 rounded border border-gray-200">Figma</span>
-                                <span
-                                    class="text-[10px] font-bold tracking-wider text-gray-500 bg-gray-50 uppercase px-2 py-1 rounded border border-gray-200">Prototyping</span>
-                            </div>
-                        </div>
-                    </article>
-
-                </div>
-
-                <div class="mt-8 text-center md:hidden">
-                    <a href="#"
-                        class="inline-flex items-center text-sm font-semibold text-gray-900 border-b border-gray-300 pb-1">
-                        View All Projects <i class="ph-bold ph-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             </div>
+
         </div>
     </section>
+
+    <div id="project-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center px-4 opacity-0 pointer-events-none transition-opacity duration-300">
+
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
+
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative z-10 transform scale-95 transition-transform duration-300"
+            id="modal-content-container">
+
+            <button onclick="closeModal()"
+                class="absolute top-4 right-4 z-20 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 hover:text-red-500 transition-colors cursor-pointer">
+                <i class="ph-bold ph-x text-xl"></i>
+            </button>
+
+            <div id="modal-body"></div>
+        </div>
+    </div>
 
     <section id="contact" class="py-32 px-6 bg-white border-t border-gray-200">
         <div class="max-w-screen-2xl mx-auto px-6 md:px-12">

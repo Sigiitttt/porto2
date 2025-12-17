@@ -320,41 +320,49 @@ const modal = document.getElementById('project-modal');
 const modalBody = document.getElementById('modal-body');
 const modalContainer = document.getElementById('modal-content-container');
 
+// Ganti fungsi openModal yang lama dengan yang ini
 function openModal(id) {
     const project = projectsData.find(p => p.id === id);
     if (!project) return;
 
-    // Isi konten modal
+    // Isi konten modal dengan Layout Persegi Panjang (Cinematic)
     modalBody.innerHTML = `
-        <div class="grid md:grid-cols-2">
-            <div class="h-64 md:h-auto bg-gray-100 relative">
+        <div class="flex flex-col md:flex-row h-auto md:h-[600px]"> 
+            
+            <div class="w-full md:w-[60%] h-64 md:h-full bg-gray-100 relative group">
                  <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
-            </div>
-            <div class="p-8 md:p-10 flex flex-col">
-                <div class="mb-4">
-                     <span class="text-xs font-bold tracking-wider text-blue-600 bg-blue-50 uppercase px-3 py-1 rounded-full border border-blue-100">
-                        ${project.category} PROJECT
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+                 
+                 <div class="absolute bottom-6 left-6">
+                    <span class="text-xs font-bold tracking-wider text-white bg-white/20 backdrop-blur border border-white/30 uppercase px-3 py-1 rounded-full">
+                        ${project.category} Project
                     </span>
-                </div>
-                <h3 class="text-3xl font-bold text-gray-900 mb-4">${project.title}</h3>
-                <div class="prose prose-sm text-gray-600 mb-8 flex-grow">
+                 </div>
+            </div>
+
+            <div class="w-full md:w-[40%] p-8 md:p-10 bg-white flex flex-col overflow-y-auto custom-scrollbar">
+                
+                <h3 class="text-3xl font-bold text-gray-900 mb-2 leading-tight">${project.title}</h3>
+                <p class="text-sm text-gray-500 font-medium mb-6 border-b border-gray-100 pb-4">${project.summary}</p>
+                
+                <div class="prose prose-sm text-gray-600 mb-8 flex-grow leading-relaxed">
                     <p>${project.description}</p>
                 </div>
                 
                 <div class="mb-8">
-                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">Tech Stack</h4>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Technology Used</h4>
                     <div class="flex flex-wrap gap-2">
-                        ${project.tech.map(t => `<span class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium border border-gray-200">${t}</span>`).join('')}
+                        ${project.tech.map(t => `<span class="px-3 py-1 rounded-md bg-gray-50 text-gray-600 text-xs font-semibold border border-gray-200">${t}</span>`).join('')}
                     </div>
                 </div>
 
-                <div class="flex gap-4 mt-auto">
+                <div class="flex gap-3 mt-auto pt-6 border-t border-gray-100">
                     ${project.linkDemo ? `
-                    <a href="${project.linkDemo}" target="_blank" class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20">
-                        Live Demo
+                    <a href="${project.linkDemo}" target="_blank" class="flex-1 text-center bg-gray-900 hover:bg-blue-600 text-white font-medium text-sm py-3 rounded-xl transition-all shadow-lg hover:shadow-blue-600/20 flex items-center justify-center gap-2">
+                        Live Demo <i class="ph-bold ph-arrow-up-right"></i>
                     </a>` : ''}
                     
-                    <a href="${project.linkGithub}" target="_blank" class="flex-1 text-center border border-gray-300 hover:border-gray-900 hover:text-white hover:bg-gray-900 text-gray-700 font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <a href="${project.linkGithub}" target="_blank" class="flex-1 text-center border border-gray-200 hover:border-gray-900 hover:text-gray-900 text-gray-600 font-medium text-sm py-3 rounded-xl transition-all flex items-center justify-center gap-2 bg-white">
                         <i class="devicon-github-original"></i> Repository
                     </a>
                 </div>
@@ -366,7 +374,7 @@ function openModal(id) {
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modalContainer.classList.remove('scale-95');
     modalContainer.classList.add('scale-100');
-    document.body.style.overflow = 'hidden'; // Stop scroll belakang
+    document.body.style.overflow = 'hidden'; // Stop scroll halaman belakang
 }
 
 function closeModal() {

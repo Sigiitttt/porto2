@@ -71,6 +71,49 @@
             transform: none;
         }
     </style>
+    <style>
+        /* ... style kamu yang lain ... */
+
+        /* OPTIMASI PERFORMA RENDER */
+
+        /* 1. Paksa elemen berat masuk ke GPU */
+        .fade-in-section,
+        .animate-blob,
+        .flip-card-inner,
+        .group {
+            will-change: transform, opacity;
+            /* Memberitahu browser elemen ini akan gerak */
+            transform: translateZ(0);
+            /* Hack untuk memicu Hardware Acceleration */
+            backface-visibility: hidden;
+            /* Mencegah flickering pada elemen 3D */
+        }
+
+        /* 2. Matikan pointer-events saat scrolling (agar FPS naik drastis) */
+        .is-scrolling {
+            pointer-events: none;
+        }
+
+        /* 3. Kurangi beban blur di HP */
+        @media (max-width: 768px) {
+            .backdrop-blur-xl {
+                backdrop-filter: none !important;
+                background: rgba(15, 23, 42, 0.95) !important;
+                /* Ganti blur dengan solid color transparan */
+            }
+
+            .backdrop-blur-md {
+                backdrop-filter: blur(4px) !important;
+                /* Kurangi blur */
+            }
+
+            /* Matikan animasi blob berat di HP jika masih lag */
+            .animate-blob {
+                animation: none !important;
+                opacity: 0.3 !important;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-base text-primary antialiased selection:bg-accent/30 selection:text-white">
@@ -146,14 +189,22 @@
                             </span>
                         </div>
 
-                        <h1
-                            class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-white">
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Data
-                                Analyst / Data Scientist</span>
-                            & <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Web
-                                Developer</span>.
-                        </h1>
+                        <div class="min-h-[120px] sm:min-h-[160px]">
+                            <h1
+                                class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-white">
+                                <span id="typewriter-1"
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"></span>
+
+                                <span id="typewriter-connector" class="text-white hidden"> & </span>
+
+                                <br class="md:hidden" />
+                                <span id="typewriter-2"
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500"></span>
+
+                                <span id="cursor"
+                                    class="inline-block w-1 h-8 md:h-12 bg-white ml-1 align-middle animate-blink"></span>
+                            </h1>
+                        </div>
 
 
 
@@ -197,24 +248,26 @@
                     <div class="order-1 lg:order-2 flex justify-center relative fade-in-section perspective-container">
 
                         <div
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-[60px] opacity-20 animate-pulse">
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-[60px] opacity-20 animate-pulse pointer-events-none">
                         </div>
 
                         <div class="flip-card w-[280px] h-[320px] sm:w-[350px] sm:h-[400px] cursor-pointer">
                             <div class="flip-card-inner relative w-full h-full transition-transform duration-700">
 
-                                <div
-                                    class="flip-card-front absolute w-full h-full rounded-3xl bg-slate-900 border border-slate-700/50 shadow-2xl overflow-hidden flex items-end justify-center">
-                                    <img src="assets/saya.png"
-                                        alt="Profile"
-                                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                                <div class="flip-card-front absolute w-full h-full rounded-3xl bg-slate-900 border border-slate-700/50 shadow-2xl overflow-hidden flex items-end justify-center"
+                                    oncontextmenu="return false;">
+
+                                    <img src="image.png" alt="Profile"
+                                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110 pointer-events-none select-none"
+                                        draggable="false"
+                                        style="-webkit-touch-callout: none; -webkit-user-select: none;">
 
                                     <div
-                                        class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-90">
+                                        class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-90 z-10">
                                     </div>
 
-                                    <div class="relative z-10 pb-6 text-center">
-                                        <h3 class="text-xl font-bold text-white">anonym</h3>
+                                    <div class="relative z-20 pb-6 text-center select-none">
+                                        <h3 class="text-xl font-bold text-white">Sigit Aringga</h3>
                                         <p class="text-sm text-blue-400">Web & Data Enthusiast</p>
                                         <p class="text-[10px] text-slate-500 mt-2 uppercase tracking-widest">Hover / Tap
                                             to Flip</p>
@@ -293,6 +346,95 @@
                     transform: rotateY(180deg);
                 }
             </style>
+
+            <style>
+                @keyframes blink {
+
+                    0%,
+                    100% {
+                        opacity: 1;
+                    }
+
+                    50% {
+                        opacity: 0;
+                    }
+                }
+
+                .animate-blink {
+                    animation: blink 0.8s infinite;
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // KONFIGURASI TEKS
+                    const text1 = "Data  Analyst";
+                    const text2 = "Web Developer.";
+
+                    // KECEPATAN (dalam milidetik)
+                    const typeSpeed = 80;   // Kecepatan ngetik
+                    const deleteSpeed = 30; // Kecepatan hapus (lebih ngebut)
+                    const pauseTime = 4000; // Jeda diam setelah selesai ngetik (2 detik)
+
+                    // Elemen
+                    const el1 = document.getElementById('typewriter-1');
+                    const elConn = document.getElementById('typewriter-connector');
+                    const el2 = document.getElementById('typewriter-2');
+
+                    // Fungsi Ngetik Maju
+                    async function typeWriter(element, text) {
+                        for (let i = 0; i < text.length; i++) {
+                            element.textContent += text.charAt(i);
+                            await new Promise(r => setTimeout(r, typeSpeed + Math.random() * 30));
+                        }
+                    }
+
+                    // Fungsi Hapus Mundur (Backspace)
+                    async function deleteWriter(element) {
+                        let text = element.textContent;
+                        while (text.length > 0) {
+                            text = text.slice(0, -1);
+                            element.textContent = text;
+                            await new Promise(r => setTimeout(r, deleteSpeed));
+                        }
+                    }
+
+                    // Fungsi Utama (Looping)
+                    async function startLoop() {
+                        while (true) { // Loop selamanya
+
+                            // 1. Ketik Teks Pertama (Biru)
+                            await typeWriter(el1, text1);
+
+                            // 2. Munculkan '&'
+                            elConn.classList.remove('hidden');
+                            await new Promise(r => setTimeout(r, 300));
+
+                            // 3. Ketik Teks Kedua (Ungu)
+                            await typeWriter(el2, text2);
+
+                            // 4. Jeda Diam (Baca dulu)
+                            await new Promise(r => setTimeout(r, pauseTime));
+
+                            // 5. Hapus Teks Kedua
+                            await deleteWriter(el2);
+
+                            // 6. Sembunyikan '&'
+                            elConn.classList.add('hidden');
+                            await new Promise(r => setTimeout(r, 100));
+
+                            // 7. Hapus Teks Pertama
+                            await deleteWriter(el1);
+
+                            // 8. Jeda sebentar sebelum mulai lagi
+                            await new Promise(r => setTimeout(r, 500));
+                        }
+                    }
+
+                    // Mulai
+                    setTimeout(startLoop, 500);
+                });
+            </script>
         </section>
 
         <section id="about" class="relative pt-32 pb-32 bg-[#020617] overflow-hidden">
@@ -415,6 +557,7 @@
                             <p>
                                 Halo! Saya mahasiswa <strong class="text-white">Teknik Informatika</strong> dengan
                                 ketertarikan pada
+
                                 <span class="text-blue-300 font-medium">Data Analysis & Data Science</span> serta
                                 <span class="text-purple-300 font-medium">Web Development (Front-End & Back-End)</span>.
                                 Saya menikmati proses mengolah data untuk menemukan insight, dan membangun aplikasi web
@@ -1470,6 +1613,61 @@
 
         document.querySelectorAll('.fade-in-section').forEach((el) => {
             observer.observe(el);
+        });
+    </script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+
+    <style>
+        html.lenis,
+        html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+            /* Matikan smooth scroll bawaan CSS biar Lenis yang handle */
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+    </style>
+
+    <script>
+        // Inisialisasi Lenis
+        const lenis = new Lenis({
+            duration: 1.2, // Durasi kelicinan (semakin besar = semakin licin/berat)
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing function ala Apple
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false, // Matikan di HP biar tetap pakai native scroll yang responsif
+            touchMultiplier: 2,
+        });
+
+        // Jalankan Loop Animasi
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        // Sambungkan Lenis dengan Anchor Links (biar klik menu tetap scroll halus)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                lenis.scrollTo(this.getAttribute('href'));
+            });
         });
     </script>
 </body>

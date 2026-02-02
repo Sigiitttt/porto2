@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* =========================================
-   BASE STYLES & FONTS
+   1. BASE STYLES & FONTS
    ========================================= */
 body {
     font-family: 'Inter', sans-serif;
 }
 
 /* =========================================
-   CUSTOM SCROLLBAR
+   2. CUSTOM SCROLLBAR
    ========================================= */
 ::-webkit-scrollbar {
     width: 10px;
@@ -28,7 +28,7 @@ body {
 }
 
 /* =========================================
-   ANIMATION UTILITIES
+   3. ANIMATION UTILITIES (Global)
    ========================================= */
 .fade-in-section {
     opacity: 0;
@@ -42,179 +42,180 @@ body {
     transform: none;
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+.animate-blink {
+    animation: blink 0.8s infinite;
+}
+
 /* =========================================
-   PERFORMANCE OPTIMIZATION (GPU)
+   4. PERFORMANCE OPTIMIZATION (GPU)
    ========================================= */
-/* 1. Paksa elemen berat masuk ke GPU */
+/* Paksa elemen berat masuk ke GPU */
 .fade-in-section,
 .animate-blob,
 .flip-card-inner,
 .group {
     will-change: transform, opacity;
-    transform: translateZ(0);
-    /* Hack Hardware Acceleration */
-    backface-visibility: hidden;
-    /* Mencegah flickering */
+    transform: translateZ(0); /* Hack Hardware Acceleration */
+    backface-visibility: hidden; /* Mencegah flickering */
 }
 
-/* 2. Matikan pointer-events saat scrolling (agar FPS naik) */
+/* Matikan pointer-events saat scrolling (agar FPS naik) */
 .is-scrolling {
     pointer-events: none;
 }
 
-/* 3. Optimasi Mobile (Kurangi Beban Render) */
+/* Optimasi Mobile (Kurangi Beban Render) */
 @media (max-width: 768px) {
     .backdrop-blur-xl {
         backdrop-filter: none !important;
         background: rgba(15, 23, 42, 0.95) !important;
     }
-
     .backdrop-blur-md {
         backdrop-filter: blur(4px) !important;
     }
-
-    /* Matikan animasi blob berat di HP */
     .animate-blob {
         animation: none !important;
         opacity: 0.3 !important;
     }
 }
 
-/* ... (kode CSS sebelumnya) ... */
+
+
+
+
 
 /* =========================================
-   ANIMASI KHUSUS PER SECTION
+   3D FLIP CARD (ANTI-BUG MOBILE)
    ========================================= */
-
-/* --- HERO SECTION --- */
 .perspective-container {
+    perspective: 1000px;
+    z-index: 20;
+}
+
+.flip-card {
+    background-color: transparent;
     perspective: 1000px;
 }
 
 .flip-card-inner {
-    transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d; /* Wajib */
 }
 
-.flip-card:hover .flip-card-inner,
-.flip-card:active .flip-card-inner {
+/* Putar saat hover */
+.flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
 }
 
+/* SETUP SISI DEPAN & BELAKANG */
 .flip-card-front,
 .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; 
+    left: 0;
+    /* Hack agar tidak flicker/hilang di HP */
+    -webkit-backface-visibility: hidden; 
     backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    /* Paksa Hardware Acceleration */
+    transform: translateZ(0); 
 }
 
+/* SISI DEPAN */
+.flip-card-front {
+    background-color: #0f172a;
+    z-index: 2;
+    /* Rotasi 0 */
+    transform: rotateY(0deg);
+}
+
+/* SISI BELAKANG (FIXED) */
 .flip-card-back {
+    /* Warna Background WAJIB didefinisikan disini agar tidak tembus */
+    background-color: #0f172a; 
+    /* Putar 180 derajat */
     transform: rotateY(180deg);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(59, 130, 246, 0.4);
 }
 
-@keyframes blink {
 
-    0%,
-    100% {
-        opacity: 1;
-    }
 
-    50% {
-        opacity: 0;
-    }
-}
 
-.animate-blink {
-    animation: blink 0.8s infinite;
-}
 
-/* --- ABOUT SECTION --- */
-@keyframes orbit-blue {
-    0% {
-        transform: translate(0, 0) scale(1);
-    }
 
-    33% {
-        transform: translate(70%, 20%) scale(1.3);
-    }
 
-    66% {
-        transform: translate(30%, 70%) scale(0.8);
-    }
 
-    100% {
-        transform: translate(0, 0) scale(1);
-    }
-}
 
-@keyframes orbit-purple {
-    0% {
-        transform: translate(60%, 60%) scale(1);
-    }
 
-    33% {
-        transform: translate(0, 10%) scale(1.2);
-    }
 
-    66% {
-        transform: translate(-10%, 50%) scale(0.9);
-    }
 
-    100% {
-        transform: translate(60%, 60%) scale(1);
-    }
-}
 
-.animate-blue-orbit {
-    animation: orbit-blue 15s infinite linear;
-}
 
-.animate-purple-orbit {
-    animation: orbit-purple 18s infinite linear;
-}
 
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes float-delayed {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(10px);
-    }
-}
-
-.animate-float {
-    animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-    animation: float-delayed 7s ease-in-out infinite;
-}
 
 /* =========================================
-   HIGH PERFORMANCE SKILL CARD (NO LAG)
+   6. ABOUT SECTION ANIMATIONS
    ========================================= */
-/* Container Utama Optimasi GPU */
+@keyframes orbit-blue {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(70%, 20%) scale(1.3); }
+    66% { transform: translate(30%, 70%) scale(0.8); }
+}
+.animate-blue-orbit { animation: orbit-blue 15s infinite linear; }
+
+@keyframes orbit-purple {
+    0%, 100% { transform: translate(60%, 60%) scale(1); }
+    33% { transform: translate(0, 10%) scale(1.2); }
+    66% { transform: translate(-10%, 50%) scale(0.9); }
+}
+.animate-purple-orbit { animation: orbit-purple 18s infinite linear; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes float-delayed {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+.animate-float-delayed { animation: float-delayed 7s ease-in-out infinite; }
+
+/* =========================================
+   7. SKILLS SECTION (High Performance)
+   ========================================= */
 .mask-gradient {
-    /* Paksa GPU Rendering untuk container pembungkus */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
-
-    /* Masking tetap ada */
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
@@ -226,69 +227,43 @@ body {
     align-items: center;
     gap: 12px;
     padding: 14px 28px;
-
-    /* OPTIMASI 1: Ganti Blur Berat dengan Solid Transparan */
-    /* Hapus backdrop-filter saat bergerak agar FPS tinggi */
-    background: rgba(15, 23, 42, 0.85);
-    /* Sedikit lebih pekat */
+    background: rgba(15, 23, 42, 0.85); /* Solid Transparan (Ringan) */
     border: 1px solid rgba(148, 163, 184, 0.1);
     border-radius: 16px;
-
     color: #94a3b8;
     font-weight: 600;
     font-size: 0.95rem;
     white-space: nowrap;
-
-    /* OPTIMASI 2: Hardware Acceleration */
     transform: translateZ(0);
     will-change: transform;
-    /* Memberitahu browser elemen ini akan gerak */
-
-    /* Transition hanya untuk hover state, bukan saat jalan */
     transition: background 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
-/* Efek Kilau (Shine) - Disederhanakan */
 .skill-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.03),
-            transparent);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
     opacity: 0;
-    /* Sembunyikan saat tidak di-hover agar ringan */
     transition: opacity 0.3s;
     pointer-events: none;
 }
 
-/* Hover State */
 .skill-card:hover {
     background: rgba(30, 41, 59, 0.95);
     color: white;
-    /* Efek angkat sedikit saja */
     transform: translateY(-3px) translateZ(0);
     border-color: rgba(59, 130, 246, 0.5);
-
-    /* Shadow sederhana saat hover */
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
     z-index: 10;
-    /* Pastikan di atas saat hover */
 }
 
-.skill-card:hover::before {
-    opacity: 1;
-}
+.skill-card:hover::before { opacity: 1; }
 
-/* Gambar Logo */
 .skill-card img {
     filter: grayscale(100%) opacity(0.7);
     transition: filter 0.3s, transform 0.3s;
-    /* Optimasi gambar */
     will-change: filter, transform;
     transform: translateZ(0);
 }
@@ -298,114 +273,111 @@ body {
     transform: scale(1.1) translateZ(0);
 }
 
-/* =========================================
-   OPTIMIZED ANIMATION (Translate3D)
-   ========================================= */
-/* Menggunakan translate3d memaksa browser pakai GPU (VGA) bukan CPU */
-
+/* Marquee Animation (GPU) */
 @keyframes marquee {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-
-    100% {
-        transform: translate3d(-50%, 0, 0);
-    }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
 }
-
 @keyframes marquee-reverse {
-    0% {
-        transform: translate3d(-50%, 0, 0);
-    }
-
-    100% {
-        transform: translate3d(0, 0, 0);
-    }
+    0% { transform: translate3d(-50%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
 }
 
 .animate-marquee {
-    display: flex;
-    gap: 1.5rem;
-    /* Sesuaikan jarak antar kartu */
+    display: flex; gap: 1.5rem;
     animation: marquee 40s linear infinite;
-    /* Sedikit diperlambat agar lebih smooth */
     width: max-content;
     will-change: transform;
-    /* KUNCI PERFORMA */
 }
-
 .animate-marquee-reverse {
-    display: flex;
-    gap: 1.5rem;
+    display: flex; gap: 1.5rem;
     animation: marquee-reverse 40s linear infinite;
     width: max-content;
     will-change: transform;
 }
+.paused { animation-play-state: paused; }
 
-.paused {
-    animation-play-state: paused;
-}
-
-/* MOBILE OPTIMIZATION */
+/* Mobile Optimization for Skills */
 @media (max-width: 768px) {
-
-    .animate-marquee,
-    .animate-marquee-reverse {
-        animation-duration: 30s;
-        /* Lebih cepat sedikit di HP */
+    .animate-marquee, .animate-marquee-reverse {
+        animation: none !important;
+        transform: none !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        padding-left: 20px; padding-right: 20px; padding-bottom: 20px;
+        -ms-overflow-style: none; scrollbar-width: none;
     }
-
+    .animate-marquee::-webkit-scrollbar, 
+    .animate-marquee-reverse::-webkit-scrollbar { display: none; }
+    
+    .flex.overflow-hidden.group { overflow: visible !important; }
+    
     .skill-card {
-        /* Matikan efek berat di HP */
+        min-width: 130px;
         box-shadow: none !important;
         backdrop-filter: none !important;
+        transform: none !important;
     }
-}
-
-/* --- CONTACT SECTION --- */
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-.animate-shimmer {
-    animation: shimmer 1.5s infinite;
-}
-
-/* --- LENIS SCROLL --- */
-html.lenis,
-html.lenis body {
-    height: auto;
-}
-
-.lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-    overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-    pointer-events: none;
 }
 
 /* =========================================
-   MISSING ANIMATION (Wajib agar Project Muncul)
+   8. CONTACT SECTION & METEORS
    ========================================= */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
 }
+.animate-shimmer { animation: shimmer 1.5s infinite; }
+
+/* Meteor Animation */
+@keyframes meteor {
+    0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
+}
+
+.meteor-slender {
+    position: absolute;
+    top: 50%; left: 50%;
+    height: 1px; width: 60px;
+    background-image: linear-gradient(to right, #94a3b8, transparent);
+    opacity: 0;
+    transform: rotate(215deg);
+    animation: meteor 3s linear infinite;
+}
+
+.meteor-slender::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+}
+
+/* Aurora Pulse */
+@keyframes pulse-slow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.7; }
+}
+.animate-pulse-slow {
+    animation: pulse-slow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+.animate-float-slow {
+    animation: float-slow 8s ease-in-out infinite;
+}
+
+/* =========================================
+   9. LENIS SCROLL (Wajib Ada)
+   ========================================= */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }

@@ -1,55 +1,65 @@
 /* =========================================
-   1. KONFIGURASI TYPEWRITER EFFECT
+   1. KONFIGURASI TYPEWRITER EFFECT (FIXED)
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    const text1 = "Data Analyst";
-    const text2 = "Web Developer.";
-    const typeSpeed = 80;
-    const deleteSpeed = 30;
-    const pauseTime = 4000;
 
-    const el1 = document.getElementById('typewriter-1');
-    const elConn = document.getElementById('typewriter-connector');
-    const el2 = document.getElementById('typewriter-2');
+    // Teks yang akan bergantian
+    const phrases = [
+        { text: "Data Analyst.", color: "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500" },
+        { text: "Web Developer.", color: "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500" }
+    ];
 
-    // Cek jika elemen ada untuk menghindari error
-    if (!el1 || !el2) return;
+    const typeSpeed = 100;
+    const deleteSpeed = 50;
+    const pauseTime = 2000;
 
-    async function typeWriter(element, text) {
+    const dynamicText = document.getElementById('typewriter-text');
+
+    if (!dynamicText) return;
+
+    async function typeWriter(text) {
         for (let i = 0; i < text.length; i++) {
-            element.textContent += text.charAt(i);
-            await new Promise(r => setTimeout(r, typeSpeed + Math.random() * 30));
+            dynamicText.textContent += text.charAt(i);
+            await new Promise(r => setTimeout(r, typeSpeed));
         }
     }
 
-    async function deleteWriter(element) {
-        let text = element.textContent;
+    async function deleteWriter() {
+        let text = dynamicText.textContent;
         while (text.length > 0) {
             text = text.slice(0, -1);
-            element.textContent = text;
+            dynamicText.textContent = text;
             await new Promise(r => setTimeout(r, deleteSpeed));
         }
     }
 
     async function startLoop() {
+        let i = 0;
         while (true) {
-            await typeWriter(el1, text1);
-            elConn.classList.remove('hidden');
-            await new Promise(r => setTimeout(r, 300));
-            await typeWriter(el2, text2);
+            const current = phrases[i % phrases.length];
+
+            // Set Warna
+            dynamicText.className = current.color;
+
+            // Ketik
+            await typeWriter(current.text);
+
+            // Tunggu
             await new Promise(r => setTimeout(r, pauseTime));
-            await deleteWriter(el2);
-            elConn.classList.add('hidden');
-            await new Promise(r => setTimeout(r, 100));
-            await deleteWriter(el1);
+
+            // Hapus
+            await deleteWriter();
+
+            // Jeda Dikit
             await new Promise(r => setTimeout(r, 500));
+
+            i++;
         }
     }
 
-    // Mulai animasi
-    setTimeout(startLoop, 500);
+    // Mulai loop
+    setTimeout(startLoop, 1000);
 });
-
 /* =========================================
    2. DATA PROYEK & RENDER LOGIC
    ========================================= */
@@ -178,14 +188,14 @@ const projectsData = [
 ];
 
 // STATE VARIABLE: Untuk melacak apakah kita sedang menampilkan semua atau cuma 3
-let isExpanded = false; 
+let isExpanded = false;
 
 function renderProjects(filter = 'all') {
     const gridContainer = document.getElementById('projects-grid');
     const viewMoreContainer = document.getElementById('view-more-container'); // Ambil elemen tombol
 
     if (!gridContainer) return;
-    
+
     gridContainer.innerHTML = '';
 
     // 1. Filter Data Sesuai Kategori
@@ -207,7 +217,7 @@ function renderProjects(filter = 'all') {
 
         const card = document.createElement('div');
         card.className = `group relative bg-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${accentColor} opacity-0 translate-y-4`;
-        
+
         card.style.animation = `fadeInUp 0.5s ease-out forwards ${delay}s`;
         delay += 0.1;
 
@@ -248,18 +258,18 @@ function renderProjects(filter = 'all') {
 // Fungsi Trigger saat tombol diklik
 function viewMoreProjects() {
     isExpanded = true; // Set status jadi tampilkan semua
-    
+
     // Ambil filter yang sedang aktif saat ini
     const activeBtn = document.querySelector('.filter-btn.active');
     const currentFilter = activeBtn ? activeBtn.dataset.filter : 'all';
-    
+
     renderProjects(currentFilter); // Render ulang
 }
 
 // Update fungsi filter
 function filterProjects(category) {
     isExpanded = false; // PENTING: Reset ke 3 lagi setiap kali ganti kategori
-    
+
     document.querySelectorAll('.filter-btn').forEach(btn => {
         if (btn.dataset.filter === category) {
             btn.classList.remove('text-slate-400', 'bg-transparent');
@@ -344,7 +354,7 @@ if (modal) {
     modal.addEventListener('click', (e) => {
         // Klik di luar panel atau tombol close (backdrop)
         if (e.target === modalBackdrop || e.target === modal) {
-           // closeModal(); // Opsional: aktifkan jika ingin klik background menutup modal
+            // closeModal(); // Opsional: aktifkan jika ingin klik background menutup modal
         }
     });
 }
@@ -363,11 +373,11 @@ function copyEmail() {
     const email = "emailmu@example.com";
     navigator.clipboard.writeText(email).then(() => {
         const tooltip = document.getElementById('copy-tooltip');
-        tooltip.classList.remove('opacity-0'); 
+        tooltip.classList.remove('opacity-0');
         tooltip.classList.add('opacity-100', '-translate-y-2');
-        setTimeout(() => { 
-            tooltip.classList.remove('opacity-100', '-translate-y-2'); 
-            tooltip.classList.add('opacity-0'); 
+        setTimeout(() => {
+            tooltip.classList.remove('opacity-100', '-translate-y-2');
+            tooltip.classList.add('opacity-0');
         }, 2000);
     });
 }

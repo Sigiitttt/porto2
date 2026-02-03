@@ -1,71 +1,48 @@
 /* =========================================
-   1. KONFIGURASI TYPEWRITER EFFECT (FIXED)
+   TYPEWRITER EFFECT (BENTO VERSION)
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
+    const textElement = document.getElementById('typewriter-text');
+    if (!textElement) return;
 
-    // Teks yang akan bergantian
-    const phrases = [
-        { text: "Data Analyst.", color: "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500" },
-        { text: "Web Developer.", color: "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500" }
-    ];
+    const phrases = ["Smart Dashboards.", "Scalable Web Apps.", "Data Solutions."];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
 
-    const typeSpeed = 100;
-    const deleteSpeed = 50;
-    const pauseTime = 2000;
-
-    const dynamicText = document.getElementById('typewriter-text');
-
-    if (!dynamicText) return;
-
-    async function typeWriter(text) {
-        for (let i = 0; i < text.length; i++) {
-            dynamicText.textContent += text.charAt(i);
-            await new Promise(r => setTimeout(r, typeSpeed));
+    function type() {
+        const currentPhrase = phrases[phraseIndex];
+        
+        if (isDeleting) {
+            textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
         }
+
+        let typeSpeed = isDeleting ? 50 : 100;
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+            typeSpeed = 2000; // Pause sebelum hapus
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            typeSpeed = 500;
+        }
+
+        setTimeout(type, typeSpeed);
     }
 
-    async function deleteWriter() {
-        let text = dynamicText.textContent;
-        while (text.length > 0) {
-            text = text.slice(0, -1);
-            dynamicText.textContent = text;
-            await new Promise(r => setTimeout(r, deleteSpeed));
-        }
-    }
-
-    async function startLoop() {
-        let i = 0;
-        while (true) {
-            const current = phrases[i % phrases.length];
-
-            // Set Warna
-            dynamicText.className = current.color;
-
-            // Ketik
-            await typeWriter(current.text);
-
-            // Tunggu
-            await new Promise(r => setTimeout(r, pauseTime));
-
-            // Hapus
-            await deleteWriter();
-
-            // Jeda Dikit
-            await new Promise(r => setTimeout(r, 500));
-
-            i++;
-        }
-    }
-
-    // Mulai loop
-    setTimeout(startLoop, 1000);
+    type();
 });
 /* =========================================
    2. DATA PROYEK & RENDER LOGIC
    ========================================= */
 const projectsData = [
     {
-        id: 1,
+        id: 2,
         title: "MatKids - Educational Math Game",
         category: "game",
         image: "assets/proyek/proyek6.png",
@@ -76,7 +53,7 @@ const projectsData = [
         linkGithub: "#"
     },
     {
-        id: 2,
+        id: 3,
         title: "TIX.ID Web – Native Version",
         category: "web",
         image: "assets/proyek/image copy.png",
@@ -87,7 +64,7 @@ const projectsData = [
         linkGithub: "https://github.com/Sigiitttt/proyek-akhir-dpw"
     },
     {
-        id: 3,
+        id: 1,
         title: "Al-Qur'an Digital Web App",
         category: "web",
         image: "assets/proyek/image.png",
@@ -455,3 +432,52 @@ if (typeof Lenis !== 'undefined') {
     });
 }
 
+
+
+/* =========================================
+   SCROLL SPY (ACTIVE NAV STATE)
+   ========================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    // Fungsi untuk mengubah kelas aktif
+    function changeActiveNav() {
+        let current = '';
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            // Angka 300 adalah offset agar trigger lebih enak (tengah layar)
+            if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Jalankan saat scroll
+    window.addEventListener('scroll', changeActiveNav);
+    
+    // Smooth Scroll saat klik (Opsional jika CSS scroll-behavior: smooth belum jalan)
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if(targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});

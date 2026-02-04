@@ -5,14 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const textElement = document.getElementById('typewriter-text');
     if (!textElement) return;
 
-    const phrases = ["Smart Dashboards.", "Scalable Web Apps.", "Data Solutions."];
+    const phrases = ["FullStack Web Dev.", "Data Analyst."];
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
 
     function type() {
         const currentPhrase = phrases[phraseIndex];
-        
+
         if (isDeleting) {
             textElement.textContent = currentPhrase.substring(0, charIndex - 1);
             charIndex--;
@@ -37,9 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     type();
 });
+
+
+
 /* =========================================
-   2. DATA PROYEK & RENDER LOGIC
+   2. PROJECTS DATA & LOGIC (FIXED)
    ========================================= */
+
+// DATA PROYEK (Lengkap sesuai data Anda)
 const projectsData = [
     {
         id: 2,
@@ -164,24 +169,24 @@ const projectsData = [
     }
 ];
 
-// STATE VARIABLE: Untuk melacak apakah kita sedang menampilkan semua atau cuma 3
+// STATE VARIABLE
 let isExpanded = false;
 
+// FUNGSI RENDER GRID PROJECT
 function renderProjects(filter = 'all') {
     const gridContainer = document.getElementById('projects-grid');
-    const viewMoreContainer = document.getElementById('view-more-container'); // Ambil elemen tombol
+    const viewMoreContainer = document.getElementById('view-more-container');
 
     if (!gridContainer) return;
 
     gridContainer.innerHTML = '';
 
-    // 1. Filter Data Sesuai Kategori
+    // 1. Filter Data
     const filteredData = filter === 'all'
         ? projectsData
         : projectsData.filter(project => project.category === filter);
 
-    // 2. Tentukan Limit Data
-    // Jika isExpanded TRUE, tampilkan semua. Jika FALSE, cuma 3.
+    // 2. Logic View More (Show 3 or All)
     const projectsToShow = isExpanded ? filteredData : filteredData.slice(0, 3);
 
     // 3. Render Card Loop
@@ -193,8 +198,10 @@ function renderProjects(filter = 'all') {
         if (project.category === 'game') accentColor = 'hover:border-green-500/50 hover:shadow-green-500/20';
 
         const card = document.createElement('div');
+        // Menggunakan fade-in-section dan is-visible agar animasi muncul
         card.className = `group relative bg-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${accentColor} opacity-0 translate-y-4`;
-
+        
+        // Animasi CSS
         card.style.animation = `fadeInUp 0.5s ease-out forwards ${delay}s`;
         delay += 0.1;
 
@@ -204,78 +211,136 @@ function renderProjects(filter = 'all') {
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium">View Details</span>
                 </div>
+                <div class="absolute top-4 left-4 z-20 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">${project.category}</div>
             </div>
             <div class="p-6">
-                <div class="flex justify-between items-start mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 border border-slate-700 px-2 py-1 rounded">${project.category}</span>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-2 line-clamp-1 group-hover:text-accent transition-colors cursor-pointer" onclick="openModal(${project.id})">${project.title}</h3>
+                <h3 class="text-xl font-bold text-white mb-2 line-clamp-1 group-hover:text-blue-400 transition-colors cursor-pointer" onclick="openModal(${project.id})">${project.title}</h3>
                 <p class="text-slate-400 text-sm line-clamp-2 mb-4">${project.summary}</p>
                 <div class="flex flex-wrap gap-2">
-                    ${project.tech.slice(0, 3).map(t => `<span class="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded-full">${t}</span>`).join('')}
-                    ${project.tech.length > 3 ? `<span class="text-[10px] px-2 py-1 bg-slate-800 text-slate-500 rounded-full">+${project.tech.length - 3}</span>` : ''}
+                    ${project.tech.slice(0, 3).map(t => `<span class="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded-full border border-slate-700">${t}</span>`).join('')}
+                    ${project.tech.length > 3 ? `<span class="text-[10px] px-2 py-1 bg-slate-800 text-slate-500 rounded-full border border-slate-700">+${project.tech.length - 3}</span>` : ''}
                 </div>
             </div>
         `;
         gridContainer.appendChild(card);
     });
 
-    // 4. Logic Tombol View More (Show/Hide)
+    // 4. Handle Tombol View More
     if (viewMoreContainer) {
-        // Jika jumlah data asli lebih dari 3 DAN kita belum expand -> Tampilkan tombol
         if (filteredData.length > 3 && !isExpanded) {
             viewMoreContainer.classList.remove('hidden');
         } else {
-            // Jika data <= 3 atau sudah di-expand -> Sembunyikan tombol
             viewMoreContainer.classList.add('hidden');
         }
     }
 }
 
-// Fungsi Trigger saat tombol diklik
-function viewMoreProjects() {
-    isExpanded = true; // Set status jadi tampilkan semua
-
-    // Ambil filter yang sedang aktif saat ini
+// Global Functions agar bisa dipanggil dari HTML
+window.viewMoreProjects = function() {
+    isExpanded = true;
     const activeBtn = document.querySelector('.filter-btn.active');
     const currentFilter = activeBtn ? activeBtn.dataset.filter : 'all';
-
-    renderProjects(currentFilter); // Render ulang
+    renderProjects(currentFilter);
 }
 
-// Update fungsi filter
-function filterProjects(category) {
-    isExpanded = false; // PENTING: Reset ke 3 lagi setiap kali ganti kategori
-
+window.filterProjects = function(category) {
+    isExpanded = false; // Reset view more saat ganti filter
+    
+    // Update Active Button Style
     document.querySelectorAll('.filter-btn').forEach(btn => {
         if (btn.dataset.filter === category) {
-            btn.classList.remove('text-slate-400', 'bg-transparent');
-            btn.classList.add('text-white', 'bg-slate-800', 'shadow-lg', 'active'); // Tambah class active
+            btn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/50');
+            btn.classList.add('active', 'text-white', 'bg-slate-800', 'shadow-lg');
         } else {
-            btn.classList.add('text-slate-400');
-            btn.classList.remove('text-white', 'bg-slate-800', 'shadow-lg', 'active');
+            btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/50');
+            btn.classList.remove('active', 'text-white', 'bg-slate-800', 'shadow-lg');
         }
     });
+    
     renderProjects(category);
 }
 
-// Initial render
+// Initial Render
 document.addEventListener('DOMContentLoaded', () => {
     renderProjects('all');
 });
 
-/* =========================================
-   3. MODAL LOGIC
-   ========================================= */
-const modal = document.getElementById('project-modal');
-const modalPanel = document.getElementById('modal-panel');
-const modalBackdrop = document.getElementById('modal-backdrop');
 
-function openModal(id) {
+/* =========================================
+   FUNNY EARTH PRELOADER V3 LOGIC
+   ========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const preloader = document.getElementById('funny-preloader');
+    const earth = document.getElementById('earth-character');
+    const textElement = document.getElementById('funny-text');
+    const snotBubble = document.getElementById('snot-bubble');
+
+    // Teks saat tidur (kalem/lucu)
+    const sleepJokes = [
+        "Lagi mimpiin kodingan bersih...",
+        "Zzz... 5 menit lagi...",
+        "Mengumpulkan niat loading...",
+        "Bentar, bantalnya enak banget...",
+        "Menghitung domba digital...",
+        "Sabar, internetnya lagi ngulet..."
+    ];
+
+    let jokeIndex = 0;
+    
+    // Ganti teks tidur
+    const textInterval = setInterval(() => {
+        jokeIndex = (jokeIndex + 1) % sleepJokes.length;
+        textElement.innerText = sleepJokes[jokeIndex];
+    }, 1500);
+
+    // SAAT WEBSITE SELESAI LOADING
+    window.addEventListener("load", () => {
+        // Delay minimal biar animasinya kerasa
+        setTimeout(() => {
+            clearInterval(textInterval);
+
+            // 1. PHASE: GELEMBUNG PECAH & KAGET
+            if(snotBubble) snotBubble.style.display = 'none'; // POP!
+            
+            // 2. PHASE: PANIK MODE
+            earth.classList.remove('sleeping');
+            earth.classList.add('panic'); // Gemetar hebat
+            
+            // Ganti teks jadi panik
+            textElement.style.color = "#DC2626"; // Merah
+            textElement.innerText = "WADUH! KESIANGAN!!";
+
+            // 3. PHASE: KABUR (FADE OUT)
+            setTimeout(() => {
+                preloader.classList.add('is-hidden');
+                
+                // Hapus elemen
+                setTimeout(() => {
+                    preloader.remove();
+                }, 600);
+                
+            }, 1000); // Panik selama 1 detik sebelum hilang
+
+        }, 2500); // Total durasi loading minimal
+    });
+});
+
+
+/* =========================================
+   3. MODAL LOGIC (FIXED)
+   ========================================= */
+
+window.openModal = function(id) {
+    const modal = document.getElementById('project-modal');
+    const modalPanel = document.getElementById('modal-panel');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+
+    // Cari project berdasarkan ID
     const project = projectsData.find(p => p.id === id);
     if (!project) return;
 
-    // Populate Data
+    // Isi Konten Modal
     const imgEl = document.getElementById('modal-image');
     imgEl.src = project.image;
     imgEl.onerror = function () { this.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop'; };
@@ -285,30 +350,41 @@ function openModal(id) {
     document.getElementById('modal-summary').innerText = project.summary;
     document.getElementById('modal-description').innerText = project.description;
 
+    // Isi Tech Stack
     const techContainer = document.getElementById('modal-tech');
     techContainer.innerHTML = project.tech.map(t =>
-        `<span class="px-3 py-1 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-300">${t}</span>`
+        `<span class="px-3 py-1 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-300 font-mono">${t}</span>`
     ).join('');
 
+    // Handle Tombol Link
     const btnDemo = document.getElementById('modal-demo');
     const btnGithub = document.getElementById('modal-github');
 
+    // Logic Demo Button
     if (project.linkDemo && project.linkDemo !== "#") {
         btnDemo.href = project.linkDemo;
         btnDemo.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+        btnDemo.style.pointerEvents = 'auto';
+        btnDemo.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> Live Demo`;
     } else {
         btnDemo.href = "javascript:void(0)";
         btnDemo.classList.add('opacity-50', 'cursor-not-allowed');
-        btnDemo.title = "Demo not available";
+        btnDemo.style.pointerEvents = 'none';
+        btnDemo.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg> Demo N/A`;
     }
 
+    // Logic Github Button
     if (project.linkGithub && project.linkGithub !== "#") {
         btnGithub.href = project.linkGithub;
+        btnGithub.classList.remove('hidden');
     } else {
-        btnGithub.href = "javascript:void(0)";
+        btnGithub.classList.add('hidden');
     }
 
+    // Tampilkan Modal (Animation)
     modal.classList.remove('hidden');
+    
+    // Timeout kecil agar transisi opacity berjalan halus
     setTimeout(() => {
         modalBackdrop.classList.remove('opacity-0');
         modalPanel.classList.remove('opacity-0', 'scale-95');
@@ -316,54 +392,80 @@ function openModal(id) {
     }, 10);
 }
 
-function closeModal() {
+window.closeModal = function() {
+    const modal = document.getElementById('project-modal');
+    const modalPanel = document.getElementById('modal-panel');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+
+    if (!modal) return;
+
+    // Animasi Keluar
     modalBackdrop.classList.add('opacity-0');
     modalPanel.classList.remove('opacity-100', 'scale-100');
     modalPanel.classList.add('opacity-0', 'scale-95');
 
+    // Tunggu animasi selesai baru hidden
     setTimeout(() => {
         modal.classList.add('hidden');
     }, 300);
 }
 
-// Event Listeners untuk Modal
-if (modal) {
-    modal.addEventListener('click', (e) => {
-        // Klik di luar panel atau tombol close (backdrop)
-        if (e.target === modalBackdrop || e.target === modal) {
-            // closeModal(); // Opsional: aktifkan jika ingin klik background menutup modal
-        }
-    });
-}
-
-// Global click handler untuk menutup modal jika klik backdrop (perbaikan logic sebelumnya)
-window.onclick = function (event) {
-    if (modalPanel && event.target == modalPanel.parentElement) {
-        closeModal();
+// Tutup Modal jika klik di luar panel (Backdrop click)
+document.addEventListener('DOMContentLoaded', () => {
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    if(modalBackdrop) {
+        modalBackdrop.addEventListener('click', closeModal);
     }
-}
+});
+
 
 /* =========================================
-   4. CONTACT FORM & UTILS
+   4. CONTACT FORM LOGIC
    ========================================= */
-function copyEmail() {
-    const email = "emailmu@example.com";
-    navigator.clipboard.writeText(email).then(() => {
+
+// Fungsi Copy Email
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
         const tooltip = document.getElementById('copy-tooltip');
-        tooltip.classList.remove('opacity-0');
-        tooltip.classList.add('opacity-100', '-translate-y-2');
+        tooltip.classList.remove('opacity-0', 'scale-90');
+        tooltip.classList.add('opacity-100', 'scale-100');
+        
+        // Hide tooltip after 2 seconds
         setTimeout(() => {
-            tooltip.classList.remove('opacity-100', '-translate-y-2');
-            tooltip.classList.add('opacity-0');
+            tooltip.classList.remove('opacity-100', 'scale-100');
+            tooltip.classList.add('opacity-0', 'scale-90');
         }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
     });
 }
 
-function sendMail(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const message = document.getElementById('message').value;
-    window.location.href = `mailto:emailmu@example.com?subject=Pesan dari ${name}&body=${message}`;
+// Fungsi Kirim Email (Simulasi)
+function sendMail(event) {
+    event.preventDefault(); // Mencegah reload halaman
+    
+    const btnSubmit = document.getElementById('btn-submit');
+    const btnText = document.getElementById('btn-text');
+    const btnLoader = document.getElementById('btn-loader');
+    
+    // Ubah tombol jadi loading
+    btnSubmit.disabled = true;
+    btnText.classList.add('hidden');
+    btnLoader.classList.remove('hidden');
+    
+    // Simulasi delay kirim (2 detik)
+    setTimeout(() => {
+        // Balikin tombol
+        btnSubmit.disabled = false;
+        btnText.classList.remove('hidden');
+        btnLoader.classList.add('hidden');
+        
+        // Reset form
+        document.getElementById('contact-form').reset();
+        
+        // Tampilkan alert sukses (Bisa diganti SweetAlert)
+        alert('Pesan berhasil dikirim! Saya akan menghubungi Anda segera.');
+    }, 2000);
 }
 
 /* =========================================
@@ -464,15 +566,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Jalankan saat scroll
     window.addEventListener('scroll', changeActiveNav);
-    
+
     // Smooth Scroll saat klik (Opsional jika CSS scroll-behavior: smooth belum jalan)
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
-            
-            if(targetSection) {
+
+            if (targetSection) {
                 window.scrollTo({
                     top: targetSection.offsetTop,
                     behavior: 'smooth'
@@ -481,3 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+

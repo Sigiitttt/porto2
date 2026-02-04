@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* =========================================
-   1. BASE STYLES & FONTS
+   1. BASE STYLES & SCROLLBAR
    ========================================= */
 body {
     font-family: 'Inter', sans-serif;
+    background-color: #020617;
+    /* Slate-950 Base */
+    color: #f8fafc;
+    overflow-x: hidden;
 }
 
-/* =========================================
-   2. CUSTOM SCROLLBAR
-   ========================================= */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -27,23 +29,375 @@ body {
     background: #475569;
 }
 
+/* Lenis Smooth Scroll Fix */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
 
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
 
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
 
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
 
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
 
 
 /* =========================================
-   NEW HERO: BENTO GRID CONCEPT
+   FUNNY PRELOADER V3 STYLES
    ========================================= */
 
-/* Background & Decor */
+#funny-preloader {
+    position: fixed; inset: 0; z-index: 9999;
+    background-color: #ECFEFF; /* Cyan sangat muda (segar) */
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'Comic Sans MS', 'Fredoka One', cursive, sans-serif;
+    transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+}
+
+#funny-preloader.is-hidden { opacity: 0; visibility: hidden; }
+
+.preloader-container {
+    position: relative; display: flex; flex-direction: column; align-items: center;
+}
+
+/* --- KARAKTER BUMI --- */
+.earth {
+    width: 110px; height: 110px;
+    background: #60A5FA;
+    border-radius: 50%;
+    position: relative;
+    border: 4px solid #172554; /* Biru Gelap Outline */
+    box-shadow: inset -10px -10px 0px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+/* Benua */
+.land { position: absolute; background: #4ADE80; border-radius: 50%; opacity: 0.9; }
+.land-1 { width: 45px; height: 35px; top: 10px; left: -10px; border-radius: 40% 60% 70% 30%; }
+.land-2 { width: 35px; height: 45px; bottom: 10px; right: 0px; border-radius: 30% 70% 50% 50%; }
+.land-3 { width: 25px; height: 25px; top: 40%; left: 45%; }
+
+/* --- WAJAH --- */
+.face {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 100%;
+}
+
+/* Mata Tidur */
+.earth.sleeping .eye {
+    position: absolute; top: 45%;
+    width: 14px; height: 8px;
+    border-bottom: 3px solid #172554;
+    border-radius: 0 0 50% 50%;
+}
+.earth.sleeping .eye.left { left: 25px; }
+.earth.sleeping .eye.right { right: 25px; }
+
+/* Mata Panik (Bangun) */
+.earth.panic .eye {
+    position: absolute; top: 35%;
+    width: 20px; height: 20px;
+    background: white;
+    border: 3px solid #172554;
+    border-radius: 50%;
+}
+.earth.panic .eye::after { /* Pupil Kecil (Shock) */
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px; height: 4px; background: #172554; border-radius: 50%;
+}
+.earth.panic .eye.left { left: 20px; }
+.earth.panic .eye.right { right: 20px; }
+
+/* Mulut & Pipi */
+.earth.sleeping .mouth {
+    position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 6px; background: #172554; border-radius: 50%;
+}
+.earth.panic .mouth {
+    position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 15px; background: #172554;
+    border-radius: 10px 10px 20px 20px; /* Mulut Teriak */
+}
+.earth.panic .mouth::after { /* Lidah */
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 20px; height: 8px; background: #F472B6; border-radius: 10px 10px 0 0;
+}
+
+.cheek {
+    position: absolute; top: 55%;
+    width: 12px; height: 7px; background: #F472B6; border-radius: 50%; opacity: 0.6;
+}
+.cheek.left { left: 15px; }
+.cheek.right { right: 15px; }
+
+/* --- GELEMBUNG INGUS (SNOT BUBBLE) --- */
+.snot-bubble {
+    position: absolute; top: 40%; right: 35%;
+    width: 0px; height: 0px; /* Start kecil */
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid #93C5FD;
+    border-radius: 50%;
+    transform-origin: top left;
+    opacity: 0;
+}
+/* Hanya muncul saat sleeping */
+.earth.sleeping .snot-bubble {
+    animation: snot-expand 2s infinite ease-in-out;
+    opacity: 1;
+}
+.earth.sleeping .snot-bubble::after { /* Kilauan gelembung */
+    content: ''; position: absolute; top: 5px; right: 5px;
+    width: 8px; height: 8px; background: white; border-radius: 50%;
+}
+
+/* --- TANGAN (Kecil imut) --- */
+.hand {
+    position: absolute; width: 20px; height: 20px;
+    background: #60A5FA; border: 3px solid #172554; border-radius: 50%;
+    top: 60%; transition: all 0.2s;
+}
+.hand-left { left: -10px; }
+.hand-right { right: -10px; }
+
+.earth.panic .hand-left { transform: translate(-10px, -20px) rotate(-45deg); } /* Tangan angkat ke atas */
+.earth.panic .hand-right { transform: translate(10px, -20px) rotate(45deg); }
+
+/* --- ANIMASI STATE --- */
+.earth.sleeping { animation: breathe 2s infinite ease-in-out; }
+
+/* Animasi Panik (Gemetar Cepat) */
+.earth.panic {
+    background: #3B82F6;
+    animation: shake-panic 0.1s infinite;
+}
+
+/* Dekorasi Zzz */
+.snooze-container { position: absolute; top: -40px; right: -30px; }
+.snooze-container span {
+    display: block; font-weight: bold; color: #172554; opacity: 0;
+    animation: float-z 2s infinite;
+}
+.z-1 { font-size: 24px; animation-delay: 0s; }
+.z-2 { font-size: 18px; animation-delay: 0.5s; transform: translateX(-10px); }
+.z-3 { font-size: 14px; animation-delay: 1s; transform: translateX(-5px); }
+.earth.panic ~ .snooze-container { display: none; } /* Hilang saat bangun */
+
+/* Text & Shadow */
+.text-area { height: 40px; margin-top: 20px; text-align: center; }
+.loading-msg { font-size: 1.2rem; color: #172554; font-weight: bold; }
+.shadow-pulse {
+    width: 80px; height: 12px; background: rgba(0,0,0,0.1);
+    border-radius: 50%; margin-top: 10px;
+    animation: shadow-scale 2s infinite ease-in-out;
+}
+
+/* --- KEYFRAMES KEREN --- */
+@keyframes breathe {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.03) rotate(2deg); }
+}
+@keyframes snot-expand {
+    0%, 100% { width: 10px; height: 10px; transform: translate(0, 0); }
+    50% { width: 35px; height: 35px; transform: translate(10px, -10px); }
+}
+@keyframes shake-panic {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    25% { transform: translate(-1px, -2px) rotate(-1deg); }
+    50% { transform: translate(-3px, 0px) rotate(1deg); }
+    75% { transform: translate(3px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -1px) rotate(-1deg); }
+}
+@keyframes float-z {
+    0% { transform: translate(0, 0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translate(15px, -25px); opacity: 0; }
+}
+@keyframes shadow-scale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.8); }
+}
+
+
+/* =========================================
+   2. UTILITIES & ANIMATION CLASSES
+   ========================================= */
+/* Fade In Section */
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* GPU Performance Hacks */
+.fade-in-section,
+.group,
+.flip-card-inner,
+.tech-card {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Text Shimmer Effect */
+@keyframes grid-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.shimmer-text {
+    background: linear-gradient(to right, #94a3b8 20%, #ffffff 50%, #94a3b8 80%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: grid-shimmer 4s linear infinite;
+}
+
+/* Typewriter Cursor */
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.animate-blink {
+    animation: blink 0.8s infinite;
+}
+
+/* Mouse Scroll Animation */
+@keyframes scroll-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(6px);
+        opacity: 0.5;
+    }
+}
+
+.animate-scroll {
+    animation: scroll-bounce 2s infinite;
+}
+
+/* =========================================
+   3. COMPONENTS: NAVIGATION
+   ========================================= */
+.nav-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 50px;
+    border-radius: 16px;
+    color: #94a3b8;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.nav-link .text {
+    font-size: 0px;
+    opacity: 0;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Active State */
+.nav-link.active {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateY(-4px);
+}
+
+.nav-link.active .icon svg {
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+}
+
+.nav-link .glow {
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0%;
+    height: 2px;
+    background: #3b82f6;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    box-shadow: 0 -2px 10px #3b82f6;
+}
+
+.nav-link.active .glow {
+    width: 40%;
+}
+
+@media (min-width: 768px) {
+    .nav-link {
+        width: 70px;
+    }
+
+    .nav-link:hover .text,
+    .nav-link.active .text {
+        font-size: 10px;
+        opacity: 1;
+        margin-top: 2px;
+    }
+
+    .nav-link:hover .icon,
+    .nav-link.active .icon {
+        transform: translateY(-2px);
+    }
+}
+
+/* =========================================
+   4. COMPONENTS: CARDS (Bento & Flip)
+   ========================================= */
+/* Hero Background */
 .hero-bg {
     background-color: #020617;
     background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 40%);
 }
 
-/* Bento Card (Kotak Kaca) */
+/* Bento Card */
 .bento-card {
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid rgba(148, 163, 184, 0.1);
@@ -62,217 +416,7 @@ body {
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* Flip Card (Integrasi di dalam Bento) */
-.perspective-container { perspective: 1000px; }
-.flip-card-wrapper {
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
-}
-.flip-trigger:hover .flip-card-wrapper { transform: rotateY(180deg); }
-
-.flip-front, .flip-back {
-    position: absolute; width: 100%; height: 100%;
-    -webkit-backface-visibility: hidden; backface-visibility: hidden;
-    border-radius: 20px; overflow: hidden;
-}
-.flip-front { z-index: 2; transform: rotateY(0deg); }
-.flip-back { 
-    transform: rotateY(180deg); z-index: 1; 
-    background: #0f172a; 
-    border: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-/* Animasi Tambahan */
-@keyframes grid-shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-.shimmer-text {
-    background: linear-gradient(to right, #94a3b8 20%, #ffffff 50%, #94a3b8 80%);
-    background-size: 200% auto;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: grid-shimmer 4s linear infinite;
-}
-
-
-
-/* =========================================
-   FLOATING BOTTOM NAVIGATION
-   ========================================= */
-
-.nav-link {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 60px; /* Lebar tombol */
-    height: 50px;
-    border-radius: 16px;
-    color: #94a3b8; /* Slate-400 */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    overflow: hidden;
-}
-
-/* Teks Label (Disembunyikan di Mobile biar rapi) */
-.nav-link .text {
-    font-size: 0px;
-    opacity: 0;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-/* Hover State */
-.nav-link:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
-}
-
-/* ACTIVE STATE (Saat Section Aktif) */
-.nav-link.active {
-    color: #3b82f6; /* Blue-500 */
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateY(-4px); /* Naik sedikit */
-}
-
-.nav-link.active .icon svg {
-    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); /* Icon Glowing */
-}
-
-/* Indikator Cahaya Bawah */
-.nav-link .glow {
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0%;
-    height: 2px;
-    background: #3b82f6;
-    border-radius: 2px;
-    transition: width 0.3s ease;
-    box-shadow: 0 -2px 10px #3b82f6;
-}
-
-.nav-link.active .glow {
-    width: 40%;
-}
-
-/* DESKTOP TWEAK: Tampilkan Teks saat Hover */
-@media (min-width: 768px) {
-    .nav-link { width: 70px; }
-    
-    .nav-link:hover .text, 
-    .nav-link.active .text {
-        font-size: 10px;
-        opacity: 1;
-        margin-top: 2px;
-    }
-    
-    .nav-link:hover .icon,
-    .nav-link.active .icon {
-        transform: translateY(-2px);
-    }
-}
-
-
-
-
-
-
-/* =========================================
-   3. ANIMATION UTILITIES (Global)
-   ========================================= */
-.fade-in-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    will-change: opacity, visibility;
-}
-
-.fade-in-section.is-visible {
-    opacity: 1;
-    transform: none;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes blink {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
-}
-
-.animate-blink {
-    animation: blink 0.8s infinite;
-}
-
-/* =========================================
-   4. PERFORMANCE OPTIMIZATION (GPU)
-   ========================================= */
-/* Paksa elemen berat masuk ke GPU */
-.fade-in-section,
-.animate-blob,
-.flip-card-inner,
-.group {
-    will-change: transform, opacity;
-    transform: translateZ(0);
-    /* Hack Hardware Acceleration */
-    backface-visibility: hidden;
-    /* Mencegah flickering */
-}
-
-/* Matikan pointer-events saat scrolling (agar FPS naik) */
-.is-scrolling {
-    pointer-events: none;
-}
-
-/* Optimasi Mobile (Kurangi Beban Render) */
-@media (max-width: 768px) {
-    .backdrop-blur-xl {
-        backdrop-filter: none !important;
-        background: rgba(15, 23, 42, 0.95) !important;
-    }
-
-    .backdrop-blur-md {
-        backdrop-filter: blur(4px) !important;
-    }
-
-    .animate-blob {
-        animation: none !important;
-        opacity: 0.3 !important;
-    }
-}
-
-
-
-
-
-
-/* =========================================
-   3D FLIP CARD (ANTI-BUG MOBILE)
-   ========================================= */
+/* 3D Flip Card (Anti-Bug Mobile Fixed) */
 .perspective-container {
     perspective: 1000px;
     z-index: 20;
@@ -283,51 +427,52 @@ body {
     perspective: 1000px;
 }
 
+.flip-card-wrapper,
+/* Untuk Bento Concept */
 .flip-card-inner {
+    /* Untuk Standard Concept */
     position: relative;
     width: 100%;
     height: 100%;
     text-align: center;
     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
-    /* Wajib */
 }
 
-/* Putar saat hover */
+/* Trigger Hover */
+.flip-trigger:hover .flip-card-wrapper,
 .flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
 }
 
-/* SETUP SISI DEPAN & BELAKANG */
+/* Front & Back Logic */
 .flip-card-front,
-.flip-card-back {
+.flip-front,
+.flip-card-back,
+.flip-back {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    /* Hack agar tidak flicker/hilang di HP */
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     border-radius: 1.5rem;
     overflow: hidden;
-    /* Paksa Hardware Acceleration */
     transform: translateZ(0);
 }
 
-/* SISI DEPAN */
-.flip-card-front {
+.flip-card-front,
+.flip-front {
     background-color: #0f172a;
     z-index: 2;
-    /* Rotasi 0 */
     transform: rotateY(0deg);
 }
 
-/* SISI BELAKANG (FIXED) */
-.flip-card-back {
-    /* Warna Background WAJIB didefinisikan disini agar tidak tembus */
+.flip-card-back,
+.flip-back {
     background-color: #0f172a;
-    /* Putar 180 derajat */
+    /* Wajib ada warna agar tidak tembus */
     transform: rotateY(180deg);
     z-index: 1;
     display: flex;
@@ -336,21 +481,16 @@ body {
     border: 1px solid rgba(59, 130, 246, 0.4);
 }
 
-
 /* =========================================
-   7. SKILLS SECTION (PREMIUM ANIMATED MARQUEE)
+   5. COMPONENTS: SKILLS MARQUEE
    ========================================= */
-
-/* Container Utama */
 .skills-container {
     position: relative;
     overflow: hidden;
-    /* Masking untuk efek pudar di kiri & kanan */
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
-/* Kartu Skill (Glassmorphism) */
 .tech-card {
     position: relative;
     flex-shrink: 0;
@@ -358,34 +498,25 @@ body {
     align-items: center;
     gap: 12px;
     padding: 10px 20px;
-
-    /* Glass Effect */
     background: rgba(30, 41, 59, 0.4);
     border: 1px solid rgba(148, 163, 184, 0.1);
     border-radius: 12px;
     backdrop-filter: blur(4px);
-
-    /* Typography */
     color: #cbd5e1;
     font-size: 0.9rem;
     font-weight: 500;
     white-space: nowrap;
-
-    /* Performance Optimization */
-    transform: translateZ(0);
     transition: all 0.3s ease;
 }
 
-/* Efek Hover: Menyala Biru & Naik Sedikit */
 .tech-card:hover {
     background: rgba(59, 130, 246, 0.1);
     border-color: rgba(59, 130, 246, 0.4);
     color: white;
-    box-shadow: 0 4px 20px -5px rgba(59, 130, 246, 0.3);
     transform: translateY(-2px);
+    box-shadow: 0 4px 20px -5px rgba(59, 130, 246, 0.3);
 }
 
-/* Style Icon */
 .tech-card img {
     width: 24px;
     height: 24px;
@@ -394,12 +525,9 @@ body {
 
 .tech-card:hover img {
     transform: scale(1.2);
-    /* Zoom in saat hover */
 }
 
-/* === ANIMASI MARQUEE === */
-
-/* Keyframes untuk gerak kiri & kanan */
+/* Marquee Animations */
 @keyframes scroll-left {
     from {
         transform: translateX(0);
@@ -420,17 +548,13 @@ body {
     }
 }
 
-/* Track Container */
 .marquee-track {
     display: flex;
     gap: 1.5rem;
-    /* Jarak antar kartu */
     width: max-content;
     will-change: transform;
-    /* Paksa GPU rendering */
 }
 
-/* Pengaturan Kecepatan Desktop (Lebih Lambat & Elegan) */
 .scroll-left {
     animation: scroll-left 50s linear infinite;
 }
@@ -439,46 +563,73 @@ body {
     animation: scroll-right 50s linear infinite;
 }
 
-/* Pause animasi saat kursor diarahkan ke container */
 .skills-container:hover .marquee-track {
     animation-play-state: paused;
 }
 
-/* === MOBILE OPTIMIZATION === */
 @media (max-width: 768px) {
 
     .scroll-left,
     .scroll-right {
-        /* Sedikit lebih cepat di HP agar terlihat dinamis */
         animation-duration: 30s;
     }
 
     .tech-card {
         padding: 8px 16px;
-        /* Kartu lebih compact */
         font-size: 0.8rem;
-    }
-
-    .tech-card img {
-        width: 20px;
-        height: 20px;
     }
 }
 
 /* =========================================
-   8. CONTACT SECTION & METEORS
+   6. ATMOSPHERIC ANIMATIONS (Stars, Meteors, Orbits)
    ========================================= */
-@keyframes shimmer {
+
+/* A. STARS (Glowing & Blink) */
+@keyframes twinkle {
+
+    0%,
     100% {
-        transform: translateX(100%);
+        opacity: 0.3;
+        transform: scale(0.8);
+        box-shadow: 0 0 0 transparent;
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.4);
+        box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
     }
 }
 
-.animate-shimmer {
-    animation: shimmer 1.5s infinite;
+.star-blink {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+    z-index: 0;
 }
 
-/* Meteor Animation */
+.delay-1 {
+    animation-duration: 2s;
+    animation-delay: 0s;
+}
+
+.delay-2 {
+    animation-duration: 3s;
+    animation-delay: 1s;
+}
+
+.delay-3 {
+    animation-duration: 4s;
+    animation-delay: 2s;
+}
+
+.delay-4 {
+    animation-duration: 2.5s;
+    animation-delay: 0.5s;
+}
+
+/* B. METEORS */
 @keyframes meteor {
     0% {
         transform: rotate(215deg) translateX(0);
@@ -519,7 +670,66 @@ body {
     box-shadow: 0 0 10px #fff;
 }
 
-/* Aurora Pulse */
+/* C. ORBITS (Spinning) */
+@keyframes spin-slow {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes spin-reverse-slow {
+    from {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+@keyframes spin-medium {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+    animation: spin-reverse-slow 25s linear infinite;
+}
+
+.animate-spin-medium {
+    animation: spin-medium 15s linear infinite;
+}
+
+/* D. FLOAT & PULSE */
+@keyframes float-card {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float-card {
+    animation: float-card 6s ease-in-out infinite;
+}
+
 @keyframes pulse-slow {
 
     0%,
@@ -536,121 +746,94 @@ body {
     animation: pulse-slow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes float-slow {
-
-    0%,
+@keyframes shimmer-btn {
     100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-shimmer {
+    animation: shimmer-btn 1.5s infinite;
+}
+
+/* =========================================
+   PROJECTS SECTION STYLES
+   ========================================= */
+.filter-btn {
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: rgba(30, 41, 59, 0.8); /* slate-800 */
+    color: white;
+}
+
+.filter-btn.active {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Pastikan section project terlihat */
+#projects-grid {
+    min-height: 200px; /* Mencegah collapse saat loading */
+}
+
+
+/* =========================================
+   PROJECT ANIMATIONS (WAJIB ADA)
+   ========================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
         transform: translateY(0);
     }
-
-    50% {
-        transform: translateY(-20px);
-    }
 }
 
-.animate-float-slow {
-    animation: float-slow 8s ease-in-out infinite;
+/* Pastikan Grid Project punya tinggi minimal agar footer tidak naik */
+#projects-grid {
+    min-height: 100px;
 }
 
-/* =========================================
-   9. LENIS SCROLL (Smooth Scrolling Lib)
-   ========================================= */
-html.lenis,
-html.lenis body {
-    height: auto;
+/* Styling Modal (Popup Detail Proyek) */
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal-content {
+    background: #0f172a; border: 1px solid #1e293b;
+    width: 90%; max-width: 600px; max-height: 90vh;
+    border-radius: 16px; padding: 24px; overflow-y: auto;
+    transform: scale(0.9); transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content { transform: scale(1); }
+
+
+
+
+@keyframes shimmer-laser {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
 }
 
-.lenis.lenis-smooth {
-    scroll-behavior: auto !important;
+.animate-shimmer {
+    animation: shimmer-laser 3s linear infinite;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
+@keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(200%); }
 }
-
-.lenis.lenis-stopped {
-    overflow: hidden;
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
 }
-
-.lenis.lenis-scrolling iframe {
-    pointer-events: none;
-}
-
-/* =========================================
-   ABOUT SECTION ANIMATIONS
-   ========================================= */
-@keyframes spin-slow {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes spin-reverse-slow {
-    from { transform: translate(-50%, -50%) rotate(360deg); }
-    to { transform: translate(-50%, -50%) rotate(0deg); }
-}
-
-.animate-spin-slow {
-    animation: spin-slow 20s linear infinite;
-}
-
-.animate-spin-reverse-slow {
-    animation: spin-reverse-slow 25s linear infinite;
-}
-
-/* Float Animation untuk Kartu Stats */
-@keyframes float-card {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-.animate-float-card {
-    animation: float-card 6s ease-in-out infinite;
-}
-
-/* =========================================
-   ABOUT SECTION UPGRADES (STARS & ORBITS)
-   ========================================= */
-
-/* =========================================
-   UPDATE: BINTANG LEBIH TERANG & GLOWING
-   ========================================= */
-
-@keyframes twinkle {
-    0%, 100% { 
-        opacity: 0.3; 
-        transform: scale(0.8); 
-        box-shadow: 0 0 0 transparent; /* Redup */
-    }
-    50% { 
-        opacity: 1; 
-        transform: scale(1.4); /* Membesar */
-        box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8); /* EFEK GLOW CAHAYA */
-    }
-}
-
-.star-blink {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle 3s infinite ease-in-out;
-    z-index: 0; /* Pastikan di belakang konten */
-}
-
-/* Variasi Kecepatan & Warna */
-.delay-1 { animation-duration: 2s; animation-delay: 0s; }
-.delay-2 { animation-duration: 3s; animation-delay: 1s; }
-.delay-3 { animation-duration: 4s; animation-delay: 2s; }
-.delay-4 { animation-duration: 2.5s; animation-delay: 0.5s; }
-
-/* 2. Animasi Orbit Tambahan (Medium) */
-@keyframes spin-medium {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(-360deg); }
-}
-
-.animate-spin-medium {
-    animation: spin-medium 15s linear infinite; /* Kecepatan sedang */
-}
-
-/* Pastikan animasi lama tetap ada/valid */
-.animate-spin-slow { animation: spin-slow 25s linear infinite; }
-.animate-spin-reverse-slow { animation: spin-reverse-slow 30s linear infinite; }

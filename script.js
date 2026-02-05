@@ -280,10 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sleepJokes = [
         "Lagi mimpiin kodingan bersih...",
         "Zzz... 5 menit lagi...",
-        "Mengumpulkan niat loading...",
         "Bentar, bantalnya enak banget...",
-        "Menghitung domba digital...",
-        "Sabar, internetnya lagi ngulet..."
     ];
 
     let jokeIndex = 0;
@@ -322,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
             }, 1000); // Panik selama 1 detik sebelum hilang
 
-        }, 2500); // Total durasi loading minimal
+        }, 4000); // Total durasi loading minimal
     });
 });
 
